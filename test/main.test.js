@@ -64,7 +64,7 @@ test('start applies the stylesheet for the switches, once', async () => {
   // the log line names the switches, which is what the panel's log shows
   assert.strictEqual(logs.length, 1)
   assert.strictEqual(logs[0][0], 'info')
-  assert.match(logs[0][1], /hideAddTabButton/)
+  assert.match(logs[0][1], /hideTabBarMenu/)
 })
 
 test('a single switch applies its own rule and nothing else', async () => {

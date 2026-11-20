@@ -21,12 +21,12 @@ const ALL = 'hideAll'
 
 const DECLARATION = 'display: none !important;'
 
+// Never hidden, not even by `hideAll`: the + at the end of the tab row is the
+// way into new tabs, bookmarks and quick connect. Without it there is no way
+// to open another session from the keyboard-free UI, so it is not a switch.
+const KEEP = ['.tabs-add-btn']
+
 const OPTIONS = [
-  {
-    name: 'hideAddTabButton',
-    // the + at the end of the tab row: new tab, bookmarks, quick connect
-    selectors: ['.tabs-add-btn']
-  },
   {
     name: 'hideTabBarMenu',
     // the layout menu at the right end of the tab row
@@ -99,10 +99,14 @@ function isOn (config, name) {
 }
 
 // Which switches are in effect: `hideAll` wins, so ticking it hides everything
-// and the individual ones only matter while it is off.
+// and the individual ones only matter while it is off. A switch that would hide
+// a KEEP element is dropped even when `hideAll` asks for it.
 function selected (config) {
   const all = isOn(config, ALL)
-  return OPTIONS.filter(option => all || isOn(config, option.name))
+  return OPTIONS.filter(option =>
+    (all || isOn(config, option.name)) &&
+    !option.selectors.some(sel => KEEP.includes(sel))
+  )
 }
 
 // The stylesheet for one run of the widget. '' when nothing is switched on,
@@ -123,6 +127,7 @@ function buildCss (config) {
 module.exports = {
   ALL,
   DECLARATION,
+  KEEP,
   OPTIONS,
   HEADER,
   TOOLBAR,

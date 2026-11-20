@@ -32,7 +32,6 @@ electerm/electerm-widget-hide-ui-elements
 | 开关 | 隐藏的元素 |
 | --- | --- |
 | **隐藏下面所有元素** | 下面全部开关，一键完成 |
-| 新建标签按钮 | 标签行末尾的 `+`（新建标签、书签、快速连接） |
 | 布局菜单 | 标签行最右端的下拉箭头（分屏布局、标签列表、窗口选项） |
 | 终端 / 文件管理切换 | 终端上方的两个标签页 |
 | 会话图标 | 分屏、SFTP 路径跟随 SSH、keepalive、广播输入、自动换行、退出 |
@@ -48,7 +47,7 @@ electerm/electerm-widget-hide-ui-elements
 
 ```css
 /* electerm widget: hide-ui-elements */
-.tabs-add-btn { display: none !important; }
+.tabs-extra { display: none !important; }
 .term-sftp-tabs { display: none !important; }
 ...
 ```
@@ -60,6 +59,7 @@ electerm/electerm-widget-hide-ui-elements
 ## 注意
 
 - **只隐藏，不重排。** electerm 的终端尺寸是按窗口高度在 JS 里算的，不是按容器算，所以藏掉一行并不能把像素让给终端。因此会话工具栏保留 32px 高度而不是塌缩：全部图标隐藏后，终端上方是一条空行（同背景色，无内容），而不是底部留一条缝、每次勾选开关终端都跳一下。底栏内容隐藏后同理保留 36px。
+- **新建标签按钮永远不藏。** 标签行末尾的 `+` 是新建标签、书签、快速连接的唯一入口，因此没有做成开关，"隐藏下面所有元素" 也够不到它：藏掉之后应用就没有别的办法再开一个会话。`options.js` 里的 `KEEP` 列着它，任何开关一旦碰到它，`test/options.test.js` 直接失败。
 - **最左侧图标栏不在本 widget 范围内。** 它有自己的折叠按钮（最后一个图标，底栏那个箭头可以展开回来），electerm 会记住这个选择，所以这里不重复实现。
 - **有些开关只对桌面布局有意义**：标签栏和会话工具栏那几个选择器指向的元素，移动端布局会把它们放到别处，藏掉可能连唯一的入口也没了。
 - **与内置设置相互独立。** electerm 还有 **设置 → 通用 → 自定义 CSS**，由应用写入 `<style id="custom-css">` 并跨设备同步；本 widget 不读也不写它。两者可以同时生效，设置那张样式表在文档里更靠后，同一规则两处都写时以设置为准。一条规则只放一处。

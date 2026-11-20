@@ -27,13 +27,6 @@
         "description": "One switch for all of them. The tab bar keeps its tabs and the terminal keeps its space; the switches below are then ignored."
       },
       {
-        "name": "hideAddTabButton",
-        "label": "New tab button",
-        "type": "boolean",
-        "default": false,
-        "description": "Tab row, at the end: the + that opens a new tab and the bookmark / quick-connect panel."
-      },
-      {
         "name": "hideTabBarMenu",
         "label": "Layout menu",
         "type": "boolean",
@@ -105,10 +98,6 @@
           "hideAll": {
             "label": "隐藏下面所有元素",
             "description": "一个开关隐藏全部。标签栏保留标签，终端保留原有空间；此时下面各项单独开关不再生效。"
-          },
-          "hideAddTabButton": {
-            "label": "新建标签按钮",
-            "description": "标签行末尾的 + 按钮，用于新建标签并打开书签/快速连接面板。"
           },
           "hideTabBarMenu": {
             "label": "布局菜单",

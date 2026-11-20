@@ -9,6 +9,7 @@ const assert = require('node:assert')
 const {
   ALL,
   DECLARATION,
+  KEEP,
   OPTIONS,
   HEADER,
   TOOLBAR_GUARD,
@@ -44,10 +45,10 @@ test('one switch, one rule, and only that rule', () => {
 })
 
 test('switches add up in declaration order, each once', () => {
-  const css = buildCss({ hideAddTabButton: true, hideFooterAi: true })
+  const css = buildCss({ hideTabBarMenu: true, hideFooterAi: true })
   assert.strictEqual(css.split('\n').length, 3)
   assert.ok(css.includes(ruleOf(OPTIONS[0])))
-  assert.ok(css.indexOf('.tabs-add-btn') < css.indexOf('.terminal-footer-ai'))
+  assert.ok(css.indexOf('.tabs-extra') < css.indexOf('.terminal-footer-ai'))
 })
 
 test('one switch can hide several cells, as one rule', () => {
@@ -105,6 +106,32 @@ test('every rule hides, and hides nothing else', () => {
     assert.ok(rule.endsWith(`{ ${DECLARATION} }`), option.name)
     // one declaration, no other property smuggled in
     assert.strictEqual(rule.match(/:/g).length, 1, option.name)
+  }
+})
+
+test('the new tab button is never hidden, not even by hideAll', () => {
+  // It is the only way into new tabs, bookmarks and quick connect: a rule that
+  // hides it leaves the app with no way to open another session.
+  assert.deepStrictEqual(KEEP, ['.tabs-add-btn'])
+  // no switch may name it
+  for (const option of OPTIONS) {
+    for (const sel of option.selectors) {
+      assert.ok(!KEEP.includes(sel), `${option.name} hides ${sel}`)
+    }
+  }
+  // and the stylesheet for every switch at once does not touch it
+  assert.ok(!buildCss(everyOn()).includes('.tabs-add-btn'))
+})
+
+test('a switch that names a KEEP element is dropped, preset or not', () => {
+  const rogue = { name: 'hideAddTabButton', selectors: ['.tabs-add-btn'] }
+  OPTIONS.push(rogue)
+  try {
+    assert.ok(!selected({ hideAddTabButton: true }).includes(rogue))
+    assert.ok(!selected(everyOn()).includes(rogue))
+    assert.ok(!buildCss(everyOn()).includes('.tabs-add-btn'))
+  } finally {
+    OPTIONS.pop()
   }
 })
 

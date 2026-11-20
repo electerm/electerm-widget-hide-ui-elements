@@ -39,7 +39,6 @@ at a time.
 | Switch | Hides |
 | --- | --- |
 | **Hide everything below** | all of the switches below, in one press |
-| New tab button | the `+` at the end of the tab row (new tab, bookmarks, quick connect) |
 | Layout menu | the dropdown at the right end of the tab row (split layouts, tab list, window options) |
 | Terminal / File manager switch | the two tabs above the terminal |
 | Session icons | split view, sftp path follows ssh, keepalive, broadcast input, word wrap, exit |
@@ -56,7 +55,7 @@ The manifest's `electerm.configs` is the form electerm draws; on submit it calls
 
 ```css
 /* electerm widget: hide-ui-elements */
-.tabs-add-btn { display: none !important; }
+.tabs-extra { display: none !important; }
 .term-sftp-tabs { display: none !important; }
 ...
 ```
@@ -81,6 +80,11 @@ desktop-only: the same widget works in [electerm-web](https://github.com/electer
   strip above the terminal (same background, nothing to click) rather than a
   gap at the bottom and a terminal that moves every time you toggle a switch.
   Hiding the footer's contents leaves the 36px footer band for the same reason.
+- **The new tab button stays.** The `+` at the end of the tab row is the only
+  way into new tabs, bookmarks and quick connect, so it is not a switch and
+  *Hide everything below* does not reach it either: a stylesheet that hides it
+  leaves the app with no way to open another session. `KEEP` in `options.js`
+  names it, and `test/options.test.js` fails if any switch ever does.
 - **The left dock is not here.** The icon bar on the far left has its own
   collapse button (the last icon, and the arrow in the footer to bring it back)
   and electerm remembers the choice, so the widget does not duplicate it.
