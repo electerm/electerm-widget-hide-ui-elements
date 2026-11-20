@@ -1,0 +1,153 @@
+{
+  "name": "hide-ui-elements",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Hide electerm's accessories — tab-bar buttons, session icons, footer buttons — one switch each.",
+  "license": "MIT",
+  "author": "ZHAO Xudong",
+  "homepage": "https://github.com/electerm/electerm-widget-hide-ui-elements",
+  "main": "main.js",
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "electerm": {
+    "id": "hide-ui-elements",
+    "name": "Hide UI Elements",
+    "description": "Hide electerm's accessories — tab-bar buttons, session icons, footer buttons — one switch each.",
+    "version": "1.0.0",
+    "type": "instance",
+    "singleInstance": true,
+    "persist": true,
+    "configs": [
+      {
+        "name": "hideAll",
+        "label": "Hide everything below",
+        "type": "boolean",
+        "default": false,
+        "description": "One switch for all of them. The tab bar keeps its tabs and the terminal keeps its space; the switches below are then ignored."
+      },
+      {
+        "name": "hideAddTabButton",
+        "label": "New tab button",
+        "type": "boolean",
+        "default": false,
+        "description": "Tab row, at the end: the + that opens a new tab and the bookmark / quick-connect panel."
+      },
+      {
+        "name": "hideTabBarMenu",
+        "label": "Layout menu",
+        "type": "boolean",
+        "default": false,
+        "description": "Tab row, right end: split layouts, the tab list and window options."
+      },
+      {
+        "name": "hidePaneSwitch",
+        "label": "Terminal / File manager switch",
+        "type": "boolean",
+        "default": false,
+        "description": "The two tabs above the terminal. The pane still switches from the right-click menu and the keyboard shortcut."
+      },
+      {
+        "name": "hideSessionIcons",
+        "label": "Session icons",
+        "type": "boolean",
+        "default": false,
+        "description": "Above the terminal: split view, sftp path follows ssh, keepalive, broadcast input, word wrap, exit."
+      },
+      {
+        "name": "hideSearchFullscreen",
+        "label": "Search and fullscreen icons",
+        "type": "boolean",
+        "default": false,
+        "description": "Above the terminal, right end, plus the font-size icons on touch screens."
+      },
+      {
+        "name": "hideFooterAi",
+        "label": "AI button",
+        "type": "boolean",
+        "default": false,
+        "description": "Footer, left end: opens the AI panel."
+      },
+      {
+        "name": "hideFooterButtons",
+        "label": "History, quick command, triggers",
+        "type": "boolean",
+        "default": false,
+        "description": "Footer, next to the AI button, plus the arrow that brings a collapsed sidebar back."
+      },
+      {
+        "name": "hideFooterBatchInput",
+        "label": "Batch input",
+        "type": "boolean",
+        "default": false,
+        "description": "Footer, middle: one command, several tabs."
+      },
+      {
+        "name": "hideFooterEncoding",
+        "label": "Encoding and info",
+        "type": "boolean",
+        "default": false,
+        "description": "Footer, right end: the encoding dropdown and the session-info icon."
+      },
+      {
+        "name": "autoRun",
+        "label": "Apply on launch",
+        "type": "boolean",
+        "default": true,
+        "description": "Re-apply on every launch. This is the switch that puts the widget in electerm's auto-run list."
+      }
+    ],
+    "i18n": {
+      "zh_cn": {
+        "name": "隐藏界面元素",
+        "description": "逐项隐藏 electerm 的附属控件：标签栏按钮、会话工具栏图标、底栏按钮。",
+        "configs": {
+          "hideAll": {
+            "label": "隐藏下面所有元素",
+            "description": "一个开关隐藏全部。标签栏保留标签，终端保留原有空间；此时下面各项单独开关不再生效。"
+          },
+          "hideAddTabButton": {
+            "label": "新建标签按钮",
+            "description": "标签行末尾的 + 按钮，用于新建标签并打开书签/快速连接面板。"
+          },
+          "hideTabBarMenu": {
+            "label": "布局菜单",
+            "description": "标签行最右端：分屏布局、标签列表、窗口选项。"
+          },
+          "hidePaneSwitch": {
+            "label": "终端 / 文件管理切换",
+            "description": "终端上方的两个标签页。仍可用右键菜单和快捷键切换面板。"
+          },
+          "hideSessionIcons": {
+            "label": "会话图标",
+            "description": "终端上方：分屏、SFTP 路径跟随 SSH、keepalive、广播输入、自动换行、退出。"
+          },
+          "hideSearchFullscreen": {
+            "label": "搜索和全屏图标",
+            "description": "终端上方右端，以及触屏上的字号图标。"
+          },
+          "hideFooterAi": {
+            "label": "AI 按钮",
+            "description": "底栏左端：打开 AI 面板。"
+          },
+          "hideFooterButtons": {
+            "label": "历史、快捷命令、触发器",
+            "description": "底栏 AI 按钮旁边，以及侧栏折叠后用来展开的箭头。"
+          },
+          "hideFooterBatchInput": {
+            "label": "批量输入框",
+            "description": "底栏中间：把同一条命令发送到多个标签。"
+          },
+          "hideFooterEncoding": {
+            "label": "编码和会话信息",
+            "description": "底栏右端：编码下拉框和会话信息图标。"
+          },
+          "autoRun": {
+            "label": "启动时生效",
+            "description": "每次启动都重新应用。这个开关会把 widget 加入 electerm 的自动运行列表。"
+          }
+        }
+      }
+    }
+  }
+}
