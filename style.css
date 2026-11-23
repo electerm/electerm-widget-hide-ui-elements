@@ -1,0 +1,36 @@
+:is([data-widget-hide-ui-elements~="hideAll"], [data-widget-hide-ui-elements~="hideTabBarMenu"]) .tabs-extra {
+  display: none !important;
+}
+
+:is([data-widget-hide-ui-elements~="hideAll"], [data-widget-hide-ui-elements~="hidePaneSwitch"]) .term-sftp-tabs {
+  display: none !important;
+}
+
+:is([data-widget-hide-ui-elements~="hideAll"], [data-widget-hide-ui-elements~="hideSessionIcons"]) .sess-icon {
+  display: none !important;
+}
+
+:is([data-widget-hide-ui-elements~="hideAll"], [data-widget-hide-ui-elements~="hideSearchFullscreen"]) .term-controls {
+  display: none !important;
+}
+
+:is([data-widget-hide-ui-elements~="hideAll"], [data-widget-hide-ui-elements~="hideFooterAi"]) .terminal-footer-ai {
+  display: none !important;
+}
+
+:is([data-widget-hide-ui-elements~="hideAll"], [data-widget-hide-ui-elements~="hideFooterButtons"]) :is(.terminal-footer-history, .terminal-footer-qm, .terminal-footer-triggers, .terminal-footer-show-sidebar) {
+  display: none !important;
+}
+
+:is([data-widget-hide-ui-elements~="hideAll"], [data-widget-hide-ui-elements~="hideFooterBatchInput"]) .terminal-footer-center {
+  display: none !important;
+}
+
+:is([data-widget-hide-ui-elements~="hideAll"], [data-widget-hide-ui-elements~="hideFooterEncoding"]) .terminal-footer-info {
+  display: none !important;
+}
+
+[data-widget-hide-ui-elements~="hideAll"] .terminal-control,
+[data-widget-hide-ui-elements~="hidePaneSwitch"][data-widget-hide-ui-elements~="hideSessionIcons"][data-widget-hide-ui-elements~="hideSearchFullscreen"] .terminal-control {
+  min-height: 32px;
+}

@@ -12,7 +12,7 @@ const path = require('node:path')
 const ROOT = path.join(__dirname, '..')
 const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'))
 const conf = pkg.electerm
-const { ALL, OPTIONS } = require('../options')
+const css = fs.readFileSync(path.join(ROOT, 'style.css'), 'utf8')
 
 test('the id is what the widget folder is called', () => {
   assert.strictEqual(conf.id, 'hide-ui-elements')
@@ -26,21 +26,36 @@ test('the id is what the widget folder is called', () => {
 test('it is an auto-runnable instance widget with one instance', () => {
   assert.strictEqual(conf.type, 'instance')
   assert.strictEqual(conf.singleInstance, true)
-  assert.strictEqual(pkg.main, 'main.js')
-  assert.strictEqual(fs.existsSync(path.join(ROOT, 'main.js')), true)
-  // no stylesheet of its own: the css depends on the switches, so it comes from
-  // api.css.apply at run time (a `styles` entry would be applied as-is)
-  assert.strictEqual(conf.styles, undefined)
+  assert.strictEqual(pkg.main, undefined)
+  assert.deepStrictEqual(conf.assets.css, ['style.css'])
 })
 
-test('the form is exactly the switches the css builder knows', () => {
-  const names = conf.configs.map(c => c.name)
-  // hideAll is the preset, autoRun belongs to the host: neither has css
-  const switches = names.filter(name => name !== ALL && name !== 'autoRun')
-  assert.deepStrictEqual(switches, OPTIONS.map(o => o.name))
-  // and the order the form renders in is the order they are declared
-  assert.strictEqual(names[0], ALL)
-  assert.strictEqual(names[names.length - 1], 'autoRun')
+test('each visibility switch has a CSS rule and the new-tab button stays available', () => {
+  const names = conf.configs.map(c => c.name).filter(name => name !== 'autoRun')
+  assert.deepStrictEqual(conf.assets.settings, names)
+  for (const name of names) {
+    assert.ok(css.includes(`[data-widget-hide-ui-elements~="${name}"]`), name)
+  }
+  assert.doesNotMatch(css, /\.tabs-add-btn/)
+  const targets = {
+    hideTabBarMenu: ['tabs-extra'],
+    hidePaneSwitch: ['term-sftp-tabs'],
+    hideSessionIcons: ['sess-icon'],
+    hideSearchFullscreen: ['term-controls'],
+    hideFooterAi: ['terminal-footer-ai'],
+    hideFooterButtons: ['terminal-footer-history', 'terminal-footer-qm', 'terminal-footer-triggers', 'terminal-footer-show-sidebar'],
+    hideFooterBatchInput: ['terminal-footer-center'],
+    hideFooterEncoding: ['terminal-footer-info']
+  }
+  for (const [name, selectors] of Object.entries(targets)) {
+    const rule = css.split('}').find(rule => rule.includes(`~="${name}"`))
+    assert.ok(rule.includes('~="hideAll"'))
+    for (const selector of selectors) {
+      assert.ok(rule.includes('.' + selector))
+    }
+    assert.ok(rule.includes('display: none !important'))
+  }
+  assert.match(css, /min-height: 32px/)
 })
 
 test('every switch is an off-by-default boolean that says what it hides', () => {
@@ -50,16 +65,6 @@ test('every switch is an off-by-default boolean that says what it hides', () => 
     assert.ok(config.description && config.description.length, config.name)
     assert.strictEqual(config.default, config.name === 'autoRun')
   }
-})
-
-test('the entry is the file the manifest names, and it is not desktop-only', () => {
-  // main.js requires the host's api shim, which only exists inside electerm:
-  // test/main.test.js runs it against a stand-in. Here, just the contract:
-  assert.strictEqual(pkg.main, 'main.js')
-  const src = fs.readFileSync(path.join(ROOT, 'main.js'), 'utf8')
-  assert.match(src, /exports\.widgetRun = widgetRun/)
-  assert.match(src, /require\('@electerm\/widget-api'\)/)
-  assert.doesNotMatch(src, /require\('electron'\)/)
 })
 
 test('the version in the manifest is the package version', () => {

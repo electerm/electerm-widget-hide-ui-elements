@@ -7,7 +7,7 @@
 | | |
 | --- | --- |
 | 形态 | 配置式实例 widget：9 个开关 + 「全部隐藏」 |
-| 需要 | electerm **v5.11.8** 及以上（引入 `@electerm/widget-api` 的版本） |
+| 需要 | 支持客户端 CSS 资源的 electerm 版本 |
 | 生效方式 | 由开关生成样式表，经 widget api 交给宿主应用 |
 | 单元测试 | `npm test`，无依赖、无需安装 |
 
@@ -43,23 +43,14 @@ electerm/electerm-widget-hide-ui-elements
 
 ## 实现方式
 
-`electerm.configs` 就是 electerm 画出来的表单，提交后主进程调用 `widgetRun(config)`，开关被拼成一张样式表：
+清单中的 `electerm.assets.css` 列出 `style.css`。插件运行时，electerm 在每个窗口加载该样式表，停止时移除。
 
-```css
-/* electerm widget: hide-ui-elements */
-.tabs-extra { display: none !important; }
-.term-sftp-tabs { display: none !important; }
-...
-```
-
-再通过 `require('@electerm/widget-api').css.apply()` 交给宿主。样式挂在运行中的实例上，作为唯一一个 `<style data-electerm-widget="hide-ui-elements">` 标签原地重写，widget 停止时移除。这里没有做 Electron 事情的 `main.js`，manifest 里也没有 `styles`：样式取决于开关，只能运行时生成。开关到选择器的对照表在 `options.js`，`test/options.test.js` 负责让它和 manifest 保持一致。
-
-宿主禁止 `require('electron')`，所以这个 widget 不可能变成只有桌面版能用：它在 [electerm-web](https://github.com/electerm/electerm-web) 里同样有效。
+`assets.settings` 声明显示开关。CSS 选择器匹配根元素上的 `data-widget-hide-ui-elements` 标记。
 
 ## 注意
 
 - **只隐藏，不重排。** electerm 的终端尺寸是按窗口高度在 JS 里算的，不是按容器算，所以藏掉一行并不能把像素让给终端。因此会话工具栏保留 32px 高度而不是塌缩：全部图标隐藏后，终端上方是一条空行（同背景色，无内容），而不是底部留一条缝、每次勾选开关终端都跳一下。底栏内容隐藏后同理保留 36px。
-- **新建标签按钮永远不藏。** 标签行末尾的 `+` 是新建标签、书签、快速连接的唯一入口，因此没有做成开关，"隐藏下面所有元素" 也够不到它：藏掉之后应用就没有别的办法再开一个会话。`options.js` 里的 `KEEP` 列着它，任何开关一旦碰到它，`test/options.test.js` 直接失败。
+- **新建标签按钮永远不藏。** 标签行末尾的 `+` 是新建标签、书签、快速连接的唯一入口，因此没有做成开关，"隐藏下面所有元素" 也够不到它：藏掉之后应用就没有别的办法再开一个会话。样式表测试会检查新建标签按钮。
 - **最左侧图标栏不在本 widget 范围内。** 它有自己的折叠按钮（最后一个图标，底栏那个箭头可以展开回来），electerm 会记住这个选择，所以这里不重复实现。
 - **有些开关只对桌面布局有意义**：标签栏和会话工具栏那几个选择器指向的元素，移动端布局会把它们放到别处，藏掉可能连唯一的入口也没了。
 - **与内置设置相互独立。** electerm 还有 **设置 → 通用 → 自定义 CSS**，由应用写入 `<style id="custom-css">` 并跨设备同步；本 widget 不读也不写它。两者可以同时生效，设置那张样式表在文档里更靠后，同一规则两处都写时以设置为准。一条规则只放一处。

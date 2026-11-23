@@ -9,7 +9,7 @@ tab bar and the terminal.
 | | |
 | --- | --- |
 | Shape | config-mode instance widget, 9 switches + "hide everything" |
-| Needs | electerm **v5.11.8** or newer (the release that added `@electerm/widget-api`) |
+| Needs | An electerm build with client CSS asset support |
 | Applies | a stylesheet built from the switches, through the widget api |
 | Unit tests | `npm test` — no dependencies, no install |
 
@@ -50,26 +50,9 @@ at a time.
 
 ## How it works
 
-The manifest's `electerm.configs` is the form electerm draws; on submit it calls
-`widgetRun(config)` in the main process. The switches become one stylesheet:
+The manifest lists `style.css` in `electerm.assets.css`. Electerm loads it in each window while the widget runs and removes it on **Stop**.
 
-```css
-/* electerm widget: hide-ui-elements */
-.tabs-extra { display: none !important; }
-.term-sftp-tabs { display: none !important; }
-...
-```
-
-that goes to the host through `require('@electerm/widget-api').css.apply()`.
-The host keeps it on the running instance, applies it as one
-`<style data-electerm-widget="hide-ui-elements">` tag rewritten in place, and
-removes it when the widget stops. There is no `main.js` doing Electron work and
-no `styles` entry in the manifest: the css depends on the switches, so it is
-built at run time. `options.js` holds the switch → selector table, and
-`test/options.test.js` keeps it and the manifest in step.
-
-`require('electron')` is refused by the host, so nothing here can end up
-desktop-only: the same widget works in [electerm-web](https://github.com/electerm/electerm-web).
+The switches listed in `assets.settings` become tokens on the root element’s `data-widget-hide-ui-elements` attribute. Each CSS rule selects the corresponding token or `hideAll`.
 
 ## Notes
 
@@ -83,8 +66,7 @@ desktop-only: the same widget works in [electerm-web](https://github.com/electer
 - **The new tab button stays.** The `+` at the end of the tab row is the only
   way into new tabs, bookmarks and quick connect, so it is not a switch and
   *Hide everything below* does not reach it either: a stylesheet that hides it
-  leaves the app with no way to open another session. `KEEP` in `options.js`
-  names it, and `test/options.test.js` fails if any switch ever does.
+  leaves the app with no way to open another session. The stylesheet tests cover this button.
 - **The left dock is not here.** The icon bar on the far left has its own
   collapse button (the last icon, and the arrow in the footer to bring it back)
   and electerm remembers the choice, so the widget does not duplicate it.

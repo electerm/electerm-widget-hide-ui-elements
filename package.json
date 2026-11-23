@@ -6,7 +6,6 @@
   "license": "MIT",
   "author": "ZHAO Xudong",
   "homepage": "https://github.com/electerm/electerm-widget-hide-ui-elements",
-  "main": "main.js",
   "scripts": {
     "test": "node --test test/*.test.js"
   },
@@ -137,6 +136,22 @@
           }
         }
       }
+    },
+    "assets": {
+      "css": [
+        "style.css"
+      ],
+      "settings": [
+        "hideAll",
+        "hideTabBarMenu",
+        "hidePaneSwitch",
+        "hideSessionIcons",
+        "hideSearchFullscreen",
+        "hideFooterAi",
+        "hideFooterButtons",
+        "hideFooterBatchInput",
+        "hideFooterEncoding"
+      ]
     }
   }
 }
