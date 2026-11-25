@@ -23,7 +23,7 @@ electerm/electerm-widget-hide-ui-elements
 
 ## 使用
 
-**设置 → Widgets → 隐藏界面元素**，勾上不想看到的控件，点 **Start widget**。表单会记住上次的勾选，下次进来从上次的状态开始；保持 *启动时生效* 打开，每次启动都会重新应用。
+安装后插件会自动运行，默认显示所有控件。在 **设置 → Widgets → 隐藏界面元素** 中点 **Stop**，勾选要隐藏的控件，再点 **Start widget**。保持 *启动时生效* 开启即可在下次启动时恢复这些设置。
 
 在同一个面板（或 *Running instances*）里点 **Stop** 即可全部恢复。改开关要先 **Stop**：实例型 widget 同时只跑一个实例。
 

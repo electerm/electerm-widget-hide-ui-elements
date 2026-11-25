@@ -25,10 +25,7 @@ Or **Import folder** against a local clone.
 
 ## Use
 
-**Settings → Widgets → Hide UI Elements**, tick what you do not want to see, and
-press **Start widget**. The form remembers what you ticked, so the next visit
-starts where this one ended; leave *Apply on launch* on and it is applied again
-at every start.
+The widget starts on install with all controls visible. In **Settings → Widgets → Hide UI Elements**, press **Stop**, select the controls to hide, then press **Start widget**. Leave *Apply on launch* enabled to restore those choices on subsequent launches.
 
 **Stop** in the same panel (or in *Running instances*) shows everything again.
 Changing the switches means **Stop** first: an instance widget runs one instance

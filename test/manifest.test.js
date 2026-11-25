@@ -26,6 +26,7 @@ test('the id is what the widget folder is called', () => {
 test('it is an auto-runnable instance widget with one instance', () => {
   assert.strictEqual(conf.type, 'instance')
   assert.strictEqual(conf.singleInstance, true)
+  assert.strictEqual(conf.autoRun, true)
   assert.strictEqual(pkg.main, undefined)
   assert.deepStrictEqual(conf.assets.css, ['style.css'])
 })
